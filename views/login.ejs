@@ -1,6 +1,12 @@
 <%- include ('partials/navbar.ejs') %>
 <%- include ('partials/header.ejs') %>
 
+<% if(messages.danger) { %>
+    <div class="alert alert-danger">
+        <%= messages.danger %>
+    </div>
+<% } %>
+
 <div class="container col-4">
     <div class="card mt-4">
         <div class="card-header">

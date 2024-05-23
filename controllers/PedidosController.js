@@ -1,8 +1,9 @@
 import express from "express"
 const router = express.Router()
+import Auth from "../middleware/auth.js"
 
 // ROTA PEDIDOS
-router.get("/pedidos",function(req,res){
+router.get("/pedidos", Auth, function(req,res){
     const pedidos = [
         {numero: "983721931", valor: 1200},
         {numero: "983721932", valor: 900},

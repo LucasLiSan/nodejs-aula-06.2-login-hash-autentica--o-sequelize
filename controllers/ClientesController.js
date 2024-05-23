@@ -1,9 +1,10 @@
 import express from "express"
 import Cliente from "../models/Cliente.js"
 const router = express.Router()
+import Auth from "../middleware/auth.js"
 
 // ROTA CLIENTES
-router.get("/clientes", function(req, res){
+router.get("/clientes", Auth, function(req, res){
     Cliente.findAll().then(clientes => {
         res.render("clientes", {
             clientes: clientes

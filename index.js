@@ -11,6 +11,10 @@ import ProdutosController from "./controllers/ProdutosController.js"
 import UsersController from "./controllers/UsersController.js"
 //IMPORTANDO O GERADOR DE SESSÕES DO EXPRESS
 import session from "express-session"
+//IMPORTANDO O AUTH
+import Auth from "./middleware/auth.js"
+//IMPORTANDO O EXPRESS-FLASH
+import flash from "express-flash"
 
 // Realizando a conexão com o banco de dados
 connection.authenticate().then(()=> {
@@ -33,10 +37,11 @@ app.use(express.static('public'))
 // Permite capturar dados vindo de formulários
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
+app.use(flash())
 //configurando a sessão do usuario
 app.use(session({
     secret: "lojasecret",
-    cookie: {maxAge: 120000}, //sessão expira em 2 minutos - mudar depois
+    cookie: {maxAge: 3600000}, //sessão expira em 2 minutos - mudar depois
     saveUninitialized : false,
     resave : false
 }))
@@ -48,8 +53,10 @@ app.use("/", ProdutosController)
 app.use("/", UsersController)
 
 // ROTA PRINCIPAL
-app.get("/", function(req,res){
-    res.render("index")
+app.get("/", Auth, function(req,res){
+    res.render("index", {
+        messages: req.flash()
+    })
 })
 
 // INICIA O SERVIDOR NA PORTA 8080
